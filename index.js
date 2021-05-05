@@ -22,6 +22,6 @@ app.listen(8000, console.log('serveur running in port 8000'))
 app.use(cors())
 app.use('/',postrouter)
 
-mongoose.connect('mongodb+srv://MOAD-user:widadrey991@sandbox.grdig.mongodb.net/memory',{useUnifiedTopology: true,useNewUrlParser: true } )
+mongoose.connect('',{useUnifiedTopology: true,useNewUrlParser: true } )
         .then(()=> console.log("connected to db"))
         .catch((err) => console.error('not connected to db'))
