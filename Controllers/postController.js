@@ -67,28 +67,54 @@ exports.findpostByid= (req,res,next,id)=>{
     })
 
 }
+exports.updatePost=(req,res)=>{
+    
+Post.findById(req.params.id)
+    .then(articl=> {
+        articl.title=req.body.title,
+        articl.message=req.body.message,
+        articl.creator=req.body.creator,
+        articl.article= req.file.filename
 
-exports.deletePost=(req,res)=>{
-
-        let post= req.post
-
-        post.remove((err,post)=>{
-
+        articl.save((err, post) =>{
 
             if(err){
 
+
                 return res.status(404).json({
 
-                    error: "post not found !!"
+                    error: 'body request !!'
                 })
+
             }
 
-            res.status(204).json({
-
-                message:"post deleted"
+            res.json({
+                post: articl
             })
         })
 
+    
+    })
+    .catch((err)=> console.log(err))
+
+}
+
+exports.deletePost=(req,res)=>{
+
+    Post.findById(req.params.id)
+
+    .then((aricle)=>  {
+        aricle.remove()
+    res.json({message:'post removed'}
+    )
+    
+    })
+    
+    .catch((err)=> console.log(err))
+
+
+
+     
 
 }
 

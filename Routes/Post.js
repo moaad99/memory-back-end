@@ -1,13 +1,13 @@
 const express = require('express')
 const Post = require('../Modules/postMesg')
 const multer = require('multer')
-const {createPost,getPost,deletePost,findpostByid} = require('../Controllers/postController')
+const {createPost,getPost,deletePost,findpostByid, updatePost} = require('../Controllers/postController')
 
 const router = express.Router();
 
 const storage= multer.diskStorage({
     destination:(req,file,cb)=>{
-        cb(null,'./images')
+        cb(null,'./public')
     },
     filename:(req,file,cb)=>{
         const fileName=`${Date.now()}_${file.originalname}`;
@@ -15,26 +15,30 @@ const storage= multer.diskStorage({
     }
 })
 
-const upload= multer({ storage }).single("selectedFile");
+const upload = multer({storage:storage})
 router.post('/create', createPost)
 router.get('/get',getPost)
 
 router.delete('/delete/:id',deletePost)
 
-router.param('id',findpostByid)
-router.post('/add',upload,(req,res)=>{
+router.post('/add',upload.single('article'),(req,res)=>{
    const post= new Post({
     title:req.body.title,
     message:req.body.message,
-    creator:req.body.creator
+    creator:req.body.creator,
+    article: req.file.filename,
+
 
 })
-console.log(req.file)
     post.save()
     .then(()=>res.json({post}))
     .catch((err)=> res.status(400).json({
         error:err
     }))
 })
+router.put('/update/:id',upload.single('article'), updatePost)
+    
+ 
+
 
 module.exports=router;

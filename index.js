@@ -5,7 +5,7 @@ const mongoose= require('mongoose')
 const cors = require ('cors')
 
 const app = express()
-
+app.use(express.static('public'))
 const postrouter =require('./Routes/Post') 
 
 app.use(express.json())
